@@ -60,28 +60,28 @@ CREATE TABLE alunos_cursos_disciplinas (
 
 -- Comandos DML
 INSERT INTO emails (email) VALUES 
-('email1@dominio.com'),
-('email2@dominio.com'),
-('email3@dominio.com'),
-('email4@dominio.com'),
-('email5@dominio.com'),
-('email6@dominio.com'),
-('email7@dominio.com'),
-('email8@dominio.com'),
-('email9@dominio.com'),
-('email10@dominio.com');
+('silvaana@gmail.com'),
+('brunomar@hotmail.com'),
+('carlosedu@gmail.com'),
+('dianaribei@gmail.com'),
+('edusouza@hotmail.com'),
+('felima@gmail.com'),
+('gacosta@hotmail.com'),
+('helegomes@gmail.com'),
+('igorsan@gmail.com'),
+('jupereira@gmail.com');
 
 INSERT INTO telefones (telefone) VALUES 
-('1234-5678'),
-('2345-6789'),
-('3456-7890'),
-('4567-8901'),
-('5678-9012'),
-('6789-0123'),
-('7890-1234'),
-('8901-2345'),
-('9012-3456'),
-('0123-4567');
+('15998462345'),
+('15984125467'),
+('15971454634'),
+('15998754786'),
+('15997643284'),
+('15998543298'),
+('15995734874'),
+('15998476452'),
+('1598746549'),
+('1599765432');
 
 INSERT INTO contatos (idEmail, idTelefone) VALUES
 (1, 1),
@@ -96,16 +96,16 @@ INSERT INTO contatos (idEmail, idTelefone) VALUES
 (10, 10);
 
 INSERT INTO enderecos (logradouro, numero, cidade, UF, pais) VALUES 
-('Rua das Flores', 123, 'São Paulo', 'SP', 'Brasil'),
-('Avenida Brasil', 234, 'Rio de Janeiro', 'RJ', 'Brasil'),
-('Rua das Palmeiras', 345, 'Belo Horizonte', 'MG', 'Brasil'),
-('Praça da Sé', 456, 'Salvador', 'BA', 'Brasil'),
-('Rua dos Alfeneiros', 567, 'Recife', 'PE', 'Brasil'),
-('Avenida Paulista', 678, 'São Paulo', 'SP', 'Brasil'),
-('Rua XV de Novembro', 789, 'Curitiba', 'PR', 'Brasil'),
-('Avenida das Américas', 890, 'Rio de Janeiro', 'RJ', 'Brasil'),
-('Rua dos Bobos', 101, 'Porto Alegre', 'RS', 'Brasil'),
-('Alameda dos Anjos', 212, 'Fortaleza', 'CE', 'Brasil');
+('Rua Lima','342','Sorocaba','SP','Brasil'),
+('Rua Nova Alvorada','125','Sorocaba','SP','Brasil'),
+('Rua São Paulo','278','Sorocaba','SP','Brasil'),
+('Rua Java','324','Sorocaba','SP','Brasil'),
+('Rua Damasco','987','Sorocaba','SP','Brasil'),
+('Rua Americana','542','Sorocaba','SP','Brasil'),
+('Rua Salvação','432','Sorocaba','SP','Brasil'),
+('Rua Esmeralda','654','Sorocaba','SP','Brasil'),
+('Rua Lavanda','876','Sorocaba','SP','Brasil'),
+('Rua Silva','564','Sorocaba','SP','Brasil');
 
 INSERT INTO alunos (idEndereco, idContato, nomeAluno, cpfAluno, idadeAluno, formando) VALUES
 (1, 1, 'Ana Silva', '12345678901', 20, false),
@@ -156,3 +156,12 @@ INSERT INTO alunos_cursos_disciplinas (RA, idCurso, idDisciplina) VALUES
 (10, 1, 5);
 
 -- Comandos DQL
+SELECT * FROM alunos
+SELECT * FROM alunos_cursos_disciplinas
+SELECT * FROM contatos
+SELECT * FROM cursos
+SELECT * FROM departamentos
+SELECT * FROM disciplinas
+SELECT * FROM emails
+SELECT * FROM enderecos
+SELECT * FROM telefones
