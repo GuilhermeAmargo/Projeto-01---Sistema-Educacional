@@ -25,7 +25,7 @@ CREATE TABLE enderecos (
 );
 
 CREATE TABLE alunos (
-    RA serial PRIMARY KEY,
+    RA integer PRIMARY KEY,
     idEndereco integer REFERENCES enderecos (idEndereco),
     idContato integer REFERENCES contatos (idContato),
     nomeAluno varchar(50),
@@ -36,7 +36,7 @@ CREATE TABLE alunos (
 
 CREATE TABLE departamentos (
     idDepartamento serial PRIMARY KEY,
-    area varchar (50)
+    nomeDepartamento varchar (50)
 );
 
 CREATE TABLE cursos (
@@ -64,21 +64,21 @@ INSERT INTO emails (email) VALUES
 ('brunomar@hotmail.com'),
 ('carlosedu@gmail.com'),
 ('dianaribei@gmail.com'),
-('edusouza@hotmail.com'),
+(''),
 ('felima@gmail.com'),
 ('gacosta@hotmail.com'),
 ('helegomes@gmail.com'),
-('igorsan@gmail.com'),
+(''),
 ('jupereira@gmail.com');
 
 INSERT INTO telefones (telefone) VALUES 
 ('15998462345'),
-('15984125467'),
+(''),
 ('15971454634'),
 ('15998754786'),
 ('15997643284'),
 ('15998543298'),
-('15995734874'),
+(''),
 ('15998476452'),
 ('1598746549'),
 ('1599765432');
@@ -119,29 +119,41 @@ INSERT INTO alunos (idEndereco, idContato, nomeAluno, cpfAluno, idadeAluno, form
 (9, 9, 'Igor Santos', '90123456789', 27, false),
 (10, 10, 'Julia Pereira', '01234567890', 26, true);
 
-INSERT INTO departamentos (area) VALUES
+INSERT INTO departamentos (nomeDepartamento) VALUES
 ('Saúde'),
 ('Tecnologia'),
 ('Engenharia'),
 ('Humanas');
 
 INSERT INTO cursos (nomeCurso, idDepartamento) VALUES
-('Medicina', 1),
-('Engenharia de Software', 2),
-('Engenharia Civil', 3),
-('História', 4);
+('Enfermagem', 1),
+('Fisioterapia', 1),
+('Odontologia', 1),
+('Farmácia', 1),
+('Ciência da Computação', 2),
+('Sistemas de Informação', 2),
+('Análise e Desenvolvimento de Sistemas', 2),
+('Segurança da Informação', 2),
+('Engenharia Elétrica', 3),
+('Engenharia Mecânica', 3),
+('Engenharia Química', 3),
+('Engenharia de Produção', 3),
+('Direito', 4),
+('Psicologia', 4),
+('Sociologia', 4),
+('Letras', 4);
 
 INSERT INTO disciplinas (nomeDisciplina, disciplinaOptativa) VALUES
-('Matemática', false),
-('Física', false),
-('História', true),
-('Geografia', true),
-('Biologia', false),
-('Inglês', true),
-('Educação Física', false),
-('Artes', true),
-('Química', false),
-('Filosofia', true);
+('Cálculo I', false),
+('Física I', false),
+('História da Arte', true),
+('Geografia Urbana', true),
+('Biologia Celular', false),
+('Inglês Avançado', true),
+('Anatomia Humana', false),
+('Desenho Arquitetônico', true),
+('Química Orgânica', false),
+('Ética e Cidadania', true);
 
 INSERT INTO alunos_cursos_disciplinas (RA, idCurso, idDisciplina) VALUES
 (1, 1, 1),
@@ -165,3 +177,41 @@ SELECT * FROM disciplinas
 SELECT * FROM emails
 SELECT * FROM enderecos
 SELECT * FROM telefones
+
+-- Dado o RA ou o Nome do Aluno, buscar no BD todos os demais dados do aluno.
+SELECT cpfaluno,idadealuno,formando,logradouro,numero,cidade,uf,pais,email,telefone from (alunos natural inner join enderecos) inner join contatos USING (idcontato)
+left join emails using (idEmail) left join telefones using (idTelefone)
+WHERE nomealuno='Ana Silva' OR ra='1'
+
+-- Dado o nome de um departamento, exibir o nome de todos os cursos associados a ele.
+SELECT nomecurso from (cursos natural inner join departamentos) where nomedepartamento='Tecnologia'
+
+-- Dado o nome de uma disciplina, exibir a qual ou quais cursos ela pertence.
+SELECT nomeCurso from (alunos_cursos_disciplinas natural inner join cursos) inner join disciplinas USING (iddisciplina)
+WHERE nomeDisciplina=''
+
+-- Dado o CPF de um aluno, exibir quais disciplinas ele está cursando.
+SELECT nomeDisciplina from (alunos_cursos_disciplinas natural inner join disciplinas) inner join alunos USING (ra)
+WHERE cpfaluno='12345678901'
+
+-- Filtrar todos os alunos matriculados em um determinado curso.
+SELECT nomealuno FROM (alunos_cursos_disciplinas natural inner join alunos) inner join cursos USING (idcurso)
+WHERE nomecurso='Odontologia'
+
+-- Filtrar todos os alunos matriculados em determinada disciplina.
+SELECT nomealuno FROM (alunos_cursos_disciplinas natural inner join alunos) inner join disciplinas USING (iddisciplina)
+WHERE nomedisciplina=''
+
+-- Filtrar alunos formados.
+SELECT nomealuno FROM alunos WHERE formando=true
+
+-- Filtrar alunos ativos.
+SELECT nomealuno FROM alunos WHERE formando=false
+
+-- Apresentar a quantidade de alunos ativos por curso.
+SELECT COUNT(nomealuno) from (alunos_cursos_disciplinas natural inner join alunos) inner join cursos USING (idcurso)
+WHERE nomecurso='Odontologia' AND formando=false
+
+-- Apresentar a quantidade de alunos ativos por disciplina.
+SELECT COUNT(nomealuno) from (alunos_cursos_disciplinas natural inner join alunos) inner join disciplinas USING (iddisciplina)
+WHERE nomedisciplina='' AND formando=false
