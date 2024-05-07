@@ -11,8 +11,10 @@ CREATE TABLE telefones (
 
 CREATE TABLE contatos (
     idContato serial PRIMARY KEY,
-    idEmail integer REFERENCES emails (idEmail),
-    idTelefone integer REFERENCES telefones (idTelefone)
+    idEmail serial, 
+    CONSTRAINT fk_email FOREIGN KEY (idEmail) REFERENCES emails (idEmail),
+    idTelefone serial,
+    CONSTRAINT fk_telefone FOREIGN KEY (idTelefone) REFERENCES telefones (idTelefone)
 );
 
 CREATE TABLE enderecos (
@@ -25,9 +27,11 @@ CREATE TABLE enderecos (
 );
 
 CREATE TABLE alunos (
-    RA integer PRIMARY KEY,
-    idEndereco integer REFERENCES enderecos (idEndereco),
-    idContato integer REFERENCES contatos (idContato),
+    RA serial PRIMARY KEY,
+    idEndereco serial,
+    CONSTRAINT fk_endereço FOREIGN KEY (idEndereco) REFERENCES enderecos (idEndereco),
+    idContato serial,
+    CONSTRAINT fk_contato FOREIGN KEY (idContato) REFERENCES contatos (idContato),
     nomeAluno varchar(50),
     cpfAluno varchar(11) UNIQUE,
     idadeAluno integer,
@@ -42,7 +46,8 @@ CREATE TABLE departamentos (
 CREATE TABLE cursos (
     idCurso serial PRIMARY KEY,
     nomeCurso varchar(50),
-    idDepartamento integer REFERENCES departamentos (idDepartamento)
+    idDepartamento serial,
+    CONSTRAINT fk_departamento FOREIGN KEY (idDepartamento) REFERENCES departamentos (idDepartamento)
 );
 
 CREATE TABLE disciplinas (
@@ -53,9 +58,12 @@ CREATE TABLE disciplinas (
 
 CREATE TABLE alunos_cursos_disciplinas (
     idMatricula serial PRIMARY KEY,
-    RA integer REFERENCES alunos (RA),
-    idCurso integer REFERENCES cursos (idCurso),
-    idDisciplina integer REFERENCES disciplinas (idDisciplina)
+    RA serial,
+    CONSTRAINT fk_alunos FOREIGN KEY (RA) REFERENCES alunos (RA),
+    idCurso serial,
+    CONSTRAINT fk_curso FOREIGN KEY (idCurso) REFERENCES cursos (idCurso),
+    idDisciplina serial,
+    CONSTRAINT fk_disciplina FOREIGN KEY (idDisciplina) REFERENCES disciplinas (idDisciplina)
 );
 
 -- Comandos DML
