@@ -156,16 +156,29 @@ INSERT INTO disciplinas (nomeDisciplina, disciplinaOptativa) VALUES
 ('Ética e Cidadania', true);
 
 INSERT INTO alunos_cursos_disciplinas (RA, idCurso, idDisciplina) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 3, 3),
-(4, 1, 4),
-(5, 2, 5),
-(6, 3, 1),
-(7, 1, 2),
-(8, 2, 3),
-(9, 3, 4),
-(10, 1, 5);
+(1,7,1),
+(1,7,6),
+(2,11,9),
+(3,8,1),
+(4,3,5),
+(4,3,7),
+(5,6,1),
+(6,2,7),
+(7,14,10),
+(8,9,2),
+(9,10,2),
+(10,1,5),
+(10,1,7),
+(1),
+(2),
+(3),
+(4),
+(5),
+(6),
+(7),
+(8),
+(9),
+(10);
 
 -- Comandos DQL
 SELECT * FROM alunos
