@@ -169,16 +169,19 @@ INSERT INTO alunos_cursos_disciplinas (RA, idCurso, idDisciplina) VALUES
 (9,10,2),
 (10,1,5),
 (10,1,7),
-(1),
-(2),
-(3),
-(4),
-(5),
-(6),
-(7),
-(8),
-(9),
-(10);
+(1,5,1),
+(2,13,10),
+(3,12,1),
+(4,15,10),
+(4,15,4),
+(5,16,3),
+(6,7,1),
+(6,7,1),
+(6,7,6),
+(7,12,1),
+(8,14,10),
+(9,13,10),
+(10,9,2);
 
 -- Comandos DQL
 SELECT * FROM alunos
@@ -200,20 +203,20 @@ WHERE nomealuno='Ana Silva' OR ra='1'
 SELECT nomecurso from (cursos natural inner join departamentos) where nomedepartamento='Tecnologia'
 
 -- Dado o nome de uma disciplina, exibir a qual ou quais cursos ela pertence.
-SELECT nomeCurso from (alunos_cursos_disciplinas natural inner join cursos) inner join disciplinas USING (iddisciplina)
-WHERE nomeDisciplina=''
+SELECT DISTINCT nomeCurso from (alunos_cursos_disciplinas natural inner join cursos) inner join disciplinas USING (iddisciplina)
+WHERE nomeDisciplina='Cálculo I'
 
 -- Dado o CPF de um aluno, exibir quais disciplinas ele está cursando.
-SELECT nomeDisciplina from (alunos_cursos_disciplinas natural inner join disciplinas) inner join alunos USING (ra)
+SELECT DISTINCT nomeDisciplina from (alunos_cursos_disciplinas natural inner join disciplinas) inner join alunos USING (ra)
 WHERE cpfaluno='12345678901'
 
 -- Filtrar todos os alunos matriculados em um determinado curso.
-SELECT nomealuno FROM (alunos_cursos_disciplinas natural inner join alunos) inner join cursos USING (idcurso)
+SELECT DISTINCT nomealuno FROM (alunos_cursos_disciplinas natural inner join alunos) inner join cursos USING (idcurso)
 WHERE nomecurso='Odontologia'
 
 -- Filtrar todos os alunos matriculados em determinada disciplina.
-SELECT nomealuno FROM (alunos_cursos_disciplinas natural inner join alunos) inner join disciplinas USING (iddisciplina)
-WHERE nomedisciplina=''
+SELECT DISTINCT nomealuno FROM (alunos_cursos_disciplinas natural inner join alunos) inner join disciplinas USING (iddisciplina)
+WHERE nomedisciplina='Cálculo I'
 
 -- Filtrar alunos formados.
 SELECT nomealuno FROM alunos WHERE formando=true
@@ -222,9 +225,9 @@ SELECT nomealuno FROM alunos WHERE formando=true
 SELECT nomealuno FROM alunos WHERE formando=false
 
 -- Apresentar a quantidade de alunos ativos por curso.
-SELECT COUNT(nomealuno) from (alunos_cursos_disciplinas natural inner join alunos) inner join cursos USING (idcurso)
-WHERE nomecurso='Odontologia' AND formando=false
+SELECT COUNT(DISTINCT nomealuno) from (alunos_cursos_disciplinas natural inner join alunos) inner join cursos USING (idcurso)
+WHERE nomecurso='Análise e Desenvolvimento de Sistemas' AND formando=false
 
 -- Apresentar a quantidade de alunos ativos por disciplina.
-SELECT COUNT(nomealuno) from (alunos_cursos_disciplinas natural inner join alunos) inner join disciplinas USING (iddisciplina)
-WHERE nomedisciplina='' AND formando=false
+SELECT COUNT(DISTINCT nomealuno) from (alunos_cursos_disciplinas natural inner join alunos) inner join disciplinas USING (iddisciplina)
+WHERE nomedisciplina='Cálculo I' AND formando=false
