@@ -27,7 +27,7 @@ CREATE TABLE enderecos (
 );
 
 CREATE TABLE alunos (
-    RA serial PRIMARY KEY,
+    RA INTEGER PRIMARY KEY UNIQUE,
     idEndereco serial,
     CONSTRAINT fk_endereço FOREIGN KEY (idEndereco) REFERENCES enderecos (idEndereco),
     idContato serial,
@@ -115,17 +115,17 @@ INSERT INTO enderecos (logradouro, numero, cidade, UF, pais) VALUES
 ('Rua Lavanda','876','Sorocaba','SP','Brasil'),
 ('Rua Silva','564','Sorocaba','SP','Brasil');
 
-INSERT INTO alunos (idEndereco, idContato, nomeAluno, cpfAluno, idadeAluno, formando) VALUES
-(1, 1, 'Ana Silva', '12345678901', 20, false),
-(2, 2, 'Bruno Martins', '23456789012', 22, true),
-(3, 3, 'Carlos Eduardo', '34567890123', 21, false),
-(4, 4, 'Diana Ribeiro', '45678901234', 23, true),
-(5, 5, 'Eduardo Souza', '56789012345', 19, false),
-(6, 6, 'Fernanda Lima', '67890123456', 24, true),
-(7, 7, 'Gabriel Costa', '78901234567', 25, false),
-(8, 8, 'Helena Gomes', '89012345678', 18, true),
-(9, 9, 'Igor Santos', '90123456789', 27, false),
-(10, 10, 'Julia Pereira', '01234567890', 26, true);
+INSERT INTO alunos (RA, idEndereco, idContato, nomeAluno, cpfAluno, idadeAluno, formando) VALUES
+(1482, 1, 1, 'Ana Silva', '12345678901', 20, false),
+(2620, 2, 2, 'Bruno Martins', '23456789012', 22, true),
+(6631, 3, 3, 'Carlos Eduardo', '34567890123', 21, false),
+(1848, 4, 4, 'Diana Ribeiro', '45678901234', 23, true),
+(7684, 5, 5, 'Eduardo Souza', '56789012345', 19, false),
+(1433, 6, 6, 'Fernanda Lima', '67890123456', 24, true),
+(3634, 7, 7, 'Gabriel Costa', '78901234567', 25, false),
+(2625, 8, 8, 'Helena Gomes', '89012345678', 18, true),
+(3117, 9, 9, 'Igor Santos', '90123456789', 27, false),
+(5822, 10, 10, 'Julia Pereira', '01234567890', 26, true);
 
 INSERT INTO departamentos (nomeDepartamento) VALUES
 ('Saúde'),
@@ -164,32 +164,32 @@ INSERT INTO disciplinas (nomeDisciplina, disciplinaOptativa) VALUES
 ('Ética e Cidadania', true);
 
 INSERT INTO alunos_cursos_disciplinas (RA, idCurso, idDisciplina) VALUES
-(1,7,1),
-(1,7,6),
-(2,11,9),
-(3,8,1),
-(4,3,5),
-(4,3,7),
-(5,6,1),
-(6,2,7),
-(7,14,10),
-(8,9,2),
-(9,10,2),
-(10,1,5),
-(10,1,7),
-(1,5,1),
-(2,13,10),
-(3,12,1),
-(4,15,10),
-(4,15,4),
-(5,16,3),
-(6,7,1),
-(6,7,1),
-(6,7,6),
-(7,12,1),
-(8,14,10),
-(9,13,10),
-(10,9,2);
+(1482,7,1),
+(1482,7,6),
+(2620,11,9),
+(6631,8,1),
+(1848,3,5),
+(1848,3,7),
+(7684,6,1),
+(1433,2,7),
+(3634,14,10),
+(2625,9,2),
+(3117,10,2),
+(5822,1,5),
+(5822,1,7),
+(1482,5,1),
+(2620,13,10),
+(6631,12,1),
+(1848,15,10),
+(1848,15,4),
+(7684,16,3),
+(1433,7,1),
+(1433,7,1),
+(1433,7,6),
+(3634,12,1),
+(2625,14,10),
+(3117,13,10),
+(5822,9,2);
 
 -- Comandos DQL
 SELECT * FROM alunos
@@ -205,7 +205,7 @@ SELECT * FROM telefones
 -- Dado o RA ou o Nome do Aluno, buscar no BD todos os demais dados do aluno.
 SELECT cpfaluno,idadealuno,formando,logradouro,numero,cidade,uf,pais,email,telefone from (alunos natural inner join enderecos) inner join contatos USING (idcontato)
 left join emails using (idEmail) left join telefones using (idTelefone)
-WHERE nomealuno='Ana Silva' OR ra='1'
+WHERE nomealuno='Ana Silva' OR ra='1482'
 
 -- Dado o nome de um departamento, exibir o nome de todos os cursos associados a ele.
 SELECT nomecurso from (cursos natural inner join departamentos) where nomedepartamento='Tecnologia'
