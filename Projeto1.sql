@@ -35,7 +35,7 @@ CREATE TABLE alunos (
     nomeAluno varchar(50),
     cpfAluno varchar(11) UNIQUE,
     idadeAluno integer,
-    formando boolean
+    formado boolean
 );
 
 CREATE TABLE departamentos (
@@ -115,7 +115,7 @@ INSERT INTO enderecos (logradouro, numero, cidade, UF, pais) VALUES
 ('Rua Lavanda','876','Sorocaba','SP','Brasil'),
 ('Rua Silva','564','Sorocaba','SP','Brasil');
 
-INSERT INTO alunos (RA, idEndereco, idContato, nomeAluno, cpfAluno, idadeAluno, formando) VALUES
+INSERT INTO alunos (RA, idEndereco, idContato, nomeAluno, cpfAluno, idadeAluno, formado) VALUES
 (1482, 1, 1, 'Ana Silva', '12345678901', 20, false),
 (2620, 2, 2, 'Bruno Martins', '23456789012', 22, true),
 (6631, 3, 3, 'Carlos Eduardo', '34567890123', 21, false),
@@ -203,7 +203,7 @@ SELECT * FROM enderecos
 SELECT * FROM telefones
 
 -- Dado o RA ou o Nome do Aluno, buscar no BD todos os demais dados do aluno.
-SELECT cpfaluno,idadealuno,formando,logradouro,numero,cidade,uf,pais,email,telefone from (alunos natural inner join enderecos) inner join contatos USING (idcontato)
+SELECT cpfaluno,idadealuno,formado,logradouro,numero,cidade,uf,pais,email,telefone from (alunos natural inner join enderecos) inner join contatos USING (idcontato)
 left join emails using (idEmail) left join telefones using (idTelefone)
 WHERE nomealuno='Ana Silva' OR ra='1482'
 
@@ -227,15 +227,15 @@ SELECT DISTINCT nomealuno FROM (alunos_cursos_disciplinas natural inner join alu
 WHERE nomedisciplina='Cálculo I'
 
 -- Filtrar alunos formados.
-SELECT nomealuno FROM alunos WHERE formando=true
+SELECT nomealuno FROM alunos WHERE formado=true
 
 -- Filtrar alunos ativos.
-SELECT nomealuno FROM alunos WHERE formando=false
+SELECT nomealuno FROM alunos WHERE formado=false
 
 -- Apresentar a quantidade de alunos ativos por curso.
 SELECT COUNT(DISTINCT nomealuno) from (alunos_cursos_disciplinas natural inner join alunos) inner join cursos USING (idcurso)
-WHERE nomecurso='Análise e Desenvolvimento de Sistemas' AND formando=false
+WHERE nomecurso='Análise e Desenvolvimento de Sistemas' AND formado=false
 
 -- Apresentar a quantidade de alunos ativos por disciplina.
 SELECT COUNT(DISTINCT nomealuno) from (alunos_cursos_disciplinas natural inner join alunos) inner join disciplinas USING (iddisciplina)
-WHERE nomedisciplina='Cálculo I' AND formando=false
+WHERE nomedisciplina='Cálculo I' AND formado=false
