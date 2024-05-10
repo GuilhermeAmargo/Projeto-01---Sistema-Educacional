@@ -1,7 +1,7 @@
 -- DDL
 
 CREATE TABLE alunos (
-	cpf varchar(15) primary key,
+    cpf varchar(15) primary key,
     nome varchar(50) not null,
     idade int,
     rua text,
@@ -11,58 +11,57 @@ CREATE TABLE alunos (
     estado varchar(20),
     cep int,
     pais varchar(20)
-)
+);
 
 CREATE TABLE telefones (
     cpf varchar(15) REFERENCES alunos,
-    cod_pais int
+    cod_pais int,
     ddd int,
     numero int
-)
+);
 
 CREATE TABLE emails (
     cpf varchar(15) REFERENCES alunos,
     email varchar(64),
     dominio varchar(20)
-)
+);
 
 CREATE TABLE departamentos (
     id_dpto serial primary key,
     sigla_dpto varchar(4),
     nome_dpto varchar(10)
-)
+);
 
 CREATE TABLE cursos (
-    id_curso serial,
-    nome_curso varchar(10),
+    id_curso serial primary key,
+    nome_curso varchar(50),
     id_dpto serial REFERENCES departamentos
-)
+);
 
 CREATE TABLE matriculas (
     ra serial PRIMARY KEY,
     cpf varchar(15) REFERENCES alunos,
     status varchar(10),
     id_curso int REFERENCES cursos
-)
+);
 
 CREATE TABLE disciplinas (
     id_disciplina serial PRIMARY KEY,
-    nome_disciplina varchar(10),
+    nome_disciplina varchar(50),
     optativa boolean
-)
+);
 
 CREATE TABLE cursos_disciplinas (
     id_curso serial REFERENCES cursos,
     id_disciplina serial REFERENCES disciplinas
-)
+);
 
 CREATE TABLE matriculas_cursos (
     ra serial REFERENCES matriculas,
     id_disciplina serial REFERENCES disciplinas
-)
+);
 
 -- DML
-
 INSERT INTO alunos (cpf, nome, idade, rua, numero, bairro, cidade, estado, cep, pais) 
 VALUES 
 ('111.222.333-44', 'Ana Clara Santos', 24, 'Rua das Flores', '123', 'Centro', 'São Paulo', 'SP', 01234567, 'Brasil'),
@@ -102,38 +101,12 @@ VALUES
 ('999.000.111-22', 'fernando.martins@yandex.com', 'yandex.com'),
 ('000.111.222-33', 'gustavo.santos@zoho.com', 'zoho.com');
 
-INSERT INTO matriculas (cpf, status, id_curso) 
-VALUES 
-('111.222.333-44', 'Ativo', 1),
-('222.333.444-55', 'Ativo', 2),
-('333.444.555-66', 'Ativo', 3),
-('444.555.666-77', 'Inativo', 1),
-('555.666.777-88', 'Formado', 2),
-('666.777.888-99', 'Ativo', 1),
-('777.888.999-00', 'Inativo', 3),
-('888.999.000-11', 'Ativo', 1),
-('999.000.111-22', 'Formado', 2),
-('000.111.222-33', 'Ativo', 3);
-
 INSERT INTO departamentos (sigla_dpto, nome_dpto)
 VALUES 
 ('SAU', 'Saúde'),
 ('TEC', 'Tecnologia'),
 ('ENG', 'Engenharia'),
 ('HUM', 'Humanas');
-
-INSERT INTO disciplinas (nome_disciplina, optativa)
-VALUES 
-('Anatomia', FALSE),
-('Algoritmos', FALSE),
-('Construção Civil', FALSE),
-('Direito Constitucional', FALSE),
-('Física Quântica', FALSE),
-('Marketing Digital', FALSE),
-('Psicologia Social', FALSE),
-('Desenho Arquitetônico', FALSE),
-('Gestão de Projetos', FALSE),
-('Literatura Brasileira', FALSE);
 
 INSERT INTO cursos (nome_curso, id_dpto)
 VALUES 
@@ -148,46 +121,108 @@ VALUES
 ('Engenharia de Produção', 3),
 ('Letras', 4);
 
+INSERT INTO matriculas (cpf, status, id_curso) 
+VALUES 
+('111.222.333-44', 'Ativo', 1),
+('222.333.444-55', 'Ativo', 2),
+('333.444.555-66', 'Ativo', 3),
+('444.555.666-77', 'Inativo', 1),
+('555.666.777-88', 'Formado', 2),
+('666.777.888-99', 'Ativo', 1),
+('777.888.999-00', 'Inativo', 3),
+('888.999.000-11', 'Ativo', 1),
+('999.000.111-22', 'Formado', 2),
+('000.111.222-33', 'Ativo', 3);
+
+INSERT INTO disciplinas (nome_disciplina, optativa)
+VALUES 
+('Anatomia', FALSE),
+('Algoritmos', FALSE),
+('Construção Civil', FALSE),
+('Direito Constitucional', FALSE),
+('Física Quântica', FALSE),
+('Marketing Digital', FALSE),
+('Psicologia Social', FALSE),
+('Desenho Arquitetônico', FALSE),
+('Gestão de Projetos', FALSE),
+('Literatura Brasileira', FALSE);
 
 INSERT INTO cursos_disciplinas (id_curso, id_disciplina)
 VALUES 
-(5, 1), 
+(1, 1), 
+(2, 2), 
+(3, 3), 
+(4, 4),
 (5, 3), 
-(6, 2), 
-(6, 4),
-(7, 1), 
-(7, 5), 
-(8, 4),
-(8, 7), 
-(9, 1), 
-(9, 3), 
-(10, 7), 
-(10, 9), 
-(11, 4), 
-(11, 6), 
-(12, 1), 
-(12, 10), 
-(13, 9), 
-(13, 3), 
-(14, 10), 
-(14, 8); 
- 
- SELECT * FROM alunos;
- SELECT * FROM telefones;
- SELECT * FROM emails;
- SELECT * FROM departamentos;
- SELECT * FROM cursos;
- SELECT * FROM matriculas;
+(6, 7), 
+(7, 6),
+(8, 1), 
+(9, 9), 
+(10, 10);
+
+INSERT INTO matriculas_cursos (ra, id_disciplina)
+VALUES 
+(1, 1), 
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+-- DQL
+SELECT * FROM alunos;
+SELECT * FROM telefones;
+SELECT * FROM emails;
+SELECT * FROM departamentos;
+SELECT * FROM cursos;
+SELECT * FROM matriculas;
 SELECT * FROM disciplinas;
 SELECT * FROM cursos_disciplinas;
-SELECT * FROM matriculas_cursos;
+SELECT * FROM matriculas_disciplinas;
 
+-- Dado o RA ou o Nome do Aluno, buscar no BD todos os demais dados do aluno.
+SELECT cpf,nome,idade,rua,alunos.numero,bairro,cidade,estado,cep,pais,cod_pais,ddd,telefones.numero,email,dominio from (matriculas natural inner join alunos) inner join
+telefones using (cpf) inner join emails using (cpf)
+WHERE nome='Ana Clara Santos' OR ra=1
 
+-- Dado o nome de um departamento, exibir o nome de todos os cursos associados a ele.
+SELECT nome_curso from (cursos natural inner join departamentos) where nome_dpto='Tecnologia'
 
+-- Dado o nome de uma disciplina, exibir a qual ou quais cursos ela pertence.
+SELECT nome_curso from (cursos natural inner join cursos_disciplinas) inner join disciplinas USING (id_disciplina)
+WHERE nome_disciplina='Anatomia'
 
+-- Dado o CPF de um aluno, exibir quais disciplinas ele está cursando.
+SELECT disciplinas.nome_disciplina
+FROM disciplinas
+INNER JOIN matriculas_disciplinas ON disciplinas.id_disciplina = matriculas_disciplinas.id_disciplina
+INNER JOIN matriculas ON matriculas_disciplinas.ra = matriculas.ra
+WHERE matriculas.cpf = '111.222.333-44'
 
+-- Filtrar todos os alunos matriculados em um determinado curso.
+SELECT nome FROM (alunos natural inner join matriculas) inner join cursos USING (id_curso)
+WHERE nome_curso='Enfermagem'
 
+-- Filtrar todos os alunos matriculados em determinada disciplina.
+SELECT nome FROM (alunos natural inner join matriculas) natural inner join matriculas_disciplinas inner join
+disciplinas using (id_disciplina)
+WHERE nome_disciplina='Anatomia'
 
+-- Filtrar alunos formados.
+SELECT nome FROM (alunos natural inner join matriculas) WHERE status='Formado'
 
+-- Filtrar alunos ativos.
+SELECT nome FROM (alunos natural inner join matriculas)  WHERE status='Ativo'
 
+-- Apresentar a quantidade de alunos ativos por curso.
+SELECT COUNT(nome) from (alunos natural inner join matriculas) natural inner join cursos
+WHERE nome_curso='Enfermagem' AND status='Ativo'
 
+-- Apresentar a quantidade de alunos ativos por disciplina.
+SELECT COUNT(nome) from (alunos natural inner join matriculas) natural inner join matriculas_disciplinas 
+inner join disciplinas USING (id_disciplina)
+WHERE nome_disciplina='Anatomia' AND status='Ativo'
