@@ -182,7 +182,7 @@ SELECT * FROM cursos;
 SELECT * FROM matriculas;
 SELECT * FROM disciplinas;
 SELECT * FROM cursos_disciplinas;
-SELECT * FROM matriculas_disciplinas;
+SELECT * FROM matriculas_cursos;
 
 -- Dado o RA ou o Nome do Aluno, buscar no BD todos os demais dados do aluno.
 SELECT cpf,nome,idade,rua,alunos.numero,bairro,cidade,estado,cep,pais,cod_pais,ddd,telefones.numero,email,dominio from (matriculas natural inner join alunos) inner join
@@ -199,8 +199,8 @@ WHERE nome_disciplina='Anatomia'
 -- Dado o CPF de um aluno, exibir quais disciplinas ele está cursando.
 SELECT disciplinas.nome_disciplina
 FROM disciplinas
-INNER JOIN matriculas_disciplinas ON disciplinas.id_disciplina = matriculas_disciplinas.id_disciplina
-INNER JOIN matriculas ON matriculas_disciplinas.ra = matriculas.ra
+INNER JOIN matriculas_cursos ON disciplinas.id_disciplina = matriculas_cursos.id_disciplina
+INNER JOIN matriculas ON matriculas_cursos.ra = matriculas.ra
 WHERE matriculas.cpf = '111.222.333-44'
 
 -- Filtrar todos os alunos matriculados em um determinado curso.
@@ -208,7 +208,7 @@ SELECT nome FROM (alunos natural inner join matriculas) inner join cursos USING 
 WHERE nome_curso='Enfermagem'
 
 -- Filtrar todos os alunos matriculados em determinada disciplina.
-SELECT nome FROM (alunos natural inner join matriculas) natural inner join matriculas_disciplinas inner join
+SELECT nome FROM (alunos natural inner join matriculas) natural inner join matriculas_cursos inner join
 disciplinas using (id_disciplina)
 WHERE nome_disciplina='Anatomia'
 
@@ -219,10 +219,19 @@ SELECT nome FROM (alunos natural inner join matriculas) WHERE status='Formado'
 SELECT nome FROM (alunos natural inner join matriculas)  WHERE status='Ativo'
 
 -- Apresentar a quantidade de alunos ativos por curso.
-SELECT COUNT(nome) from (alunos natural inner join matriculas) natural inner join cursos
-WHERE nome_curso='Enfermagem' AND status='Ativo'
+SELECT cursos.nome_curso, COUNT(matriculas.cpf) AS quantidade_alunos_ativos
+FROM cursos
+LEFT JOIN matriculas ON cursos.id_curso = matriculas.id_curso
+AND matriculas.status = 'Ativo'
+GROUP BY cursos.nome_curso
+ORDER BY cursos.nome_curso;
+
 
 -- Apresentar a quantidade de alunos ativos por disciplina.
-SELECT COUNT(nome) from (alunos natural inner join matriculas) natural inner join matriculas_disciplinas 
-inner join disciplinas USING (id_disciplina)
-WHERE nome_disciplina='Anatomia' AND status='Ativo'
+SELECT disciplinas.nome_disciplina, COUNT(matriculas.cpf) AS quantidade_alunos_ativos
+FROM disciplinas
+LEFT JOIN matriculas_cursos ON disciplinas.id_disciplina = matriculas_cursos.id_disciplina
+LEFT JOIN matriculas ON matriculas_cursos.ra = matriculas.ra
+AND matriculas.status = 'Ativo'
+GROUP BY disciplinas.nome_disciplina
+ORDER BY disciplinas.nome_disciplina;
